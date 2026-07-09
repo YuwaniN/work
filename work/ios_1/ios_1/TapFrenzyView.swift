@@ -1,52 +1,27 @@
 import SwiftUI
-internal import Combine
 
 struct TapFrenzyView: View {
-    @State private var score = 0
-    @State private var timeRemaining = 10
-    @State private var multiplier = 1
-    @State private var lastTapTime = Date()
-
-    @State private var isGreen = true
-    @AppStorage("tapFrenzyHighScore") private var highScore = 0
-
-    let gameTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let colorTimer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    @StateObject private var viewModel = TapFrenzyViewModel()
 
     var body: some View {
         VStack(spacing: 30) {
 
-            Text("Time: \(timeRemaining)")
+            Text("Time: \(viewModel.timeRemaining)")
                 .font(.largeTitle)
 
-            Text("Score: \(score)")
+            Text("Score: \(viewModel.score)")
                 .font(.title)
 
-            Text("Combo x\(multiplier)")
+            Text("Combo x\(viewModel.multiplier)")
                 .font(.headline)
 
-            if timeRemaining > 0 {
+            if viewModel.state == .playing {
                 Button {
-                    let currentTime = Date()
-                    let difference = currentTime.timeIntervalSince(lastTapTime)
-
-                    if difference <= 0.5 {
-                        multiplier += 1
-                    } else {
-                        multiplier = 1
-                    }
-
-                    lastTapTime = currentTime
-
-                    if isGreen {
-                        score += multiplier + 1
-                    } else {
-                        score -= 1
-                    }
+                    viewModel.tap()
                 } label: {
                     Text("TAP")
                         .frame(width: 180, height: 180)
-                        .background(isGreen ? Color.green : Color.gray)
+                        .background(viewModel.isGreen ? Color.green : Color.gray)
                         .foregroundColor(.white)
                         .clipShape(Circle())
                 }
@@ -55,23 +30,19 @@ struct TapFrenzyView: View {
                 .transition(.scale.combined(with: .opacity))
             }
 
-            if timeRemaining == 0 {
+            if viewModel.state == .gameOver {
                 VStack(spacing: 15) {
                     Text("Game Over!")
                         .font(.largeTitle)
                         .foregroundColor(.red)
 
-                    Text("High Score: \(highScore)")
+                    Text("High Score: \(viewModel.currentHighScore)")
                         .font(.title2)
                         .fontWeight(.bold)
 
                     Button("Play Again") {
                         withAnimation {
-                            score = 0
-                            timeRemaining = 10
-                            multiplier = 1
-                            isGreen = true
-                            lastTapTime = Date()
+                            viewModel.startGame()
                         }
                     }
                     .buttonStyle(.borderedProminent)
@@ -81,22 +52,9 @@ struct TapFrenzyView: View {
         }
         .padding()
         .navigationTitle("Tap Frenzy")
-        .animation(.easeInOut, value: timeRemaining == 0)
-        .onReceive(gameTimer) { _ in
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-
-                if timeRemaining == 0 {
-                    if score > highScore {
-                        highScore = score
-                    }
-                }
-            }
-        }
-        .onReceive(colorTimer) { _ in
-            if timeRemaining > 0 {
-                isGreen.toggle()
-            }
+        .animation(.easeInOut, value: viewModel.state)
+        .onAppear {
+            viewModel.startGame()
         }
     }
 }

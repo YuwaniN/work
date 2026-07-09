@@ -24,12 +24,12 @@ struct ContentView: View {
                 .controlSize(.large)
                 .tint(.blue)
 
-//                NavigationLink("Quiz Rush") {
-//                    //QuizRushView()
-//                }
-//                .buttonStyle(.borderedProminent)
-//                .controlSize(.large)
-//                .tint(.orange)
+                NavigationLink("Quiz Rush") {
+                    QuizRushView()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(.orange)
             }
             .padding()
             .navigationTitle("Home")
