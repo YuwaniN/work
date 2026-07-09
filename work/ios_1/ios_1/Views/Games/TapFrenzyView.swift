@@ -40,6 +40,11 @@ struct TapFrenzyView: View {
                         .font(.title2)
                         .fontWeight(.bold)
 
+                    ShareLink(item: "I just scored \(viewModel.score) on Tap Frenzy — beat that! 🎮") {
+                        Label("Share Score", systemImage: "square.and.arrow.up")
+                    }
+                    .buttonStyle(.bordered)
+
                     Button("Play Again") {
                         withAnimation {
                             viewModel.startGame()

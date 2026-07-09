@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 internal import Combine
 
 enum QuizViewState {
@@ -64,5 +65,17 @@ final class QuizRushVM: ObservableObject {
         }
 
         currentIndex += 1
+
+        if currentIndex >= questions.count {
+            let coordinate = LocationService.shared.currentLocation
+            GameSessionStore.append(
+                GameSession(
+                    mode: .quizRush,
+                    score: score,
+                    latitude: coordinate?.latitude ?? 0,
+                    longitude: coordinate?.longitude ?? 0
+                )
+            )
+        }
     }
 }

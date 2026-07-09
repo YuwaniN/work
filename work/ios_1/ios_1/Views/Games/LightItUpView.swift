@@ -52,6 +52,11 @@ struct LightItUpView: View {
                             .font(.title2)
                             .fontWeight(.bold)
 
+                        ShareLink(item: "I just scored \(viewModel.score) on Light It Up — beat that! ⚡") {
+                            Label("Share Score", systemImage: "square.and.arrow.up")
+                        }
+                        .buttonStyle(.bordered)
+
                         Button("Play Again") {
                             withAnimation {
                                 viewModel.startGame()

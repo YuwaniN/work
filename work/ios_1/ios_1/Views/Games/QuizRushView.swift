@@ -111,6 +111,11 @@ struct QuizRushView: View {
             Text("High Score: \(highScore)")
                 .font(.title3)
 
+            ShareLink(item: "I just scored \(viewModel.score) on Quiz Rush — beat that! ❓") {
+                Label("Share Score", systemImage: "square.and.arrow.up")
+            }
+            .buttonStyle(.bordered)
+
             Button("Play Again") {
                 Task { await viewModel.load() }
             }

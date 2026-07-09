@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreLocation
 internal import Combine
 
 // MARK: - View State
@@ -158,5 +159,14 @@ final class LightItUpVM: ObservableObject {
         if score > highScore {
             highScore = score
         }
+        let coordinate = LocationService.shared.currentLocation
+        GameSessionStore.append(
+            GameSession(
+                mode: .lightItUp,
+                score: score,
+                latitude: coordinate?.latitude ?? 0,
+                longitude: coordinate?.longitude ?? 0
+            )
+        )
     }
 }

@@ -32,6 +32,9 @@ struct HomeTab: View {
             .padding()
             .navigationTitle("Home")
         }
+        .onAppear {
+            LocationService.shared.requestPermission()
+        }
     }
 }
 
