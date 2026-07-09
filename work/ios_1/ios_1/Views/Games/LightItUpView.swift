@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LightItUpView: View {
-    @StateObject private var viewModel = LightItUpViewModel()
+    @StateObject private var viewModel = LightItUpVM()
 
     private var columns: [GridItem] {
         Array(repeating: GridItem(.flexible(), spacing: 12), count: viewModel.level.columns)

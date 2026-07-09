@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TapFrenzyView: View {
-    @StateObject private var viewModel = TapFrenzyViewModel()
+    @StateObject private var viewModel = TapFrenzyVM()
 
     var body: some View {
         VStack(spacing: 30) {

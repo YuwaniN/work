@@ -1,8 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
-    @State private var showSettings = false
-
+struct HomeTab: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 30) {
@@ -33,22 +31,10 @@ struct ContentView: View {
             }
             .padding()
             .navigationTitle("Home")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showSettings = true
-                    } label: {
-                        Image(systemName: "gearshape")
-                    }
-                }
-            }
-            .sheet(isPresented: $showSettings) {
-                SettingsView()
-            }
         }
     }
 }
 
 #Preview {
-    ContentView()
+    HomeTab()
 }

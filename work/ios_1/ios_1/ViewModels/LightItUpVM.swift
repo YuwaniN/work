@@ -11,7 +11,7 @@ enum LightItUpViewState {
 // MARK: - View Model
 
 @MainActor
-final class LightItUpViewModel: ObservableObject {
+final class LightItUpVM: ObservableObject {
     @Published private(set) var score = 0
     @Published private(set) var lives = 3
     @Published private(set) var timeRemaining = 60
@@ -159,5 +159,4 @@ final class LightItUpViewModel: ObservableObject {
             highScore = score
         }
     }
-
 }

@@ -11,7 +11,7 @@ enum TapFrenzyViewState {
 // MARK: - View Model
 
 @MainActor
-final class TapFrenzyViewModel: ObservableObject {
+final class TapFrenzyVM: ObservableObject {
     @Published private(set) var score = 0
     @Published private(set) var timeRemaining = 10
     @Published private(set) var multiplier = 1
@@ -105,5 +105,4 @@ final class TapFrenzyViewModel: ObservableObject {
         guard state == .playing else { return }
         isGreen.toggle()
     }
-
 }

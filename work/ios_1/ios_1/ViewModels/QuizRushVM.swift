@@ -8,8 +8,8 @@ enum QuizViewState {
 }
 
 @MainActor
-final class QuizRushViewModel: ObservableObject {
-    @Published private(set) var questions: [QuizQuestion] = []
+final class QuizRushVM: ObservableObject {
+    @Published private(set) var questions: [TriviaQuestion] = []
     @Published private(set) var currentIndex = 0
     @Published private(set) var score = 0
     @Published private(set) var streak = 0
@@ -18,13 +18,13 @@ final class QuizRushViewModel: ObservableObject {
     // Drives the green flash / red shake polish in the view
     @Published private(set) var lastAnswerWasCorrect: Bool?
 
-    private let service: TriviaService
+    private let service: TriviaAPI
 
-    init(service: TriviaService = TriviaService()) {
+    init(service: TriviaAPI = TriviaAPI()) {
         self.service = service
     }
 
-    var currentQuestion: QuizQuestion? {
+    var currentQuestion: TriviaQuestion? {
         guard currentIndex < questions.count else { return nil }
         return questions[currentIndex]
     }

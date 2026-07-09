@@ -1,15 +1,7 @@
-//
-//  QuizRushView.swift
-//  ios_1
-//
-//  Created by Yuwani on 2026-07-09.
-//
-
-
 import SwiftUI
 
 struct QuizRushView: View {
-    @StateObject private var viewModel = QuizRushViewModel()
+    @StateObject private var viewModel = QuizRushVM()
     @AppStorage("quizRushHighScore") private var highScore = 0
     @State private var shakeOffset: CGFloat = 0
 
