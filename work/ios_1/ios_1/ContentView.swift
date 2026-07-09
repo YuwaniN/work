@@ -1,100 +1,54 @@
 import SwiftUI
-internal import Combine
 
 struct ContentView: View {
-    @State private var score = 0
-    @State private var timeRemaining = 10
-    @State private var multiplier = 1
-    @State private var lastTapTime = Date()
-    
-    @State private var isGreen = true
-    @State private var highScore = 0
-    
-    
-    let gameTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let colorTimer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
-    
-    var body: some View {
-        VStack(spacing: 30) {
-            
-            Text("Time: \(timeRemaining)")
-                .font(.largeTitle)
-            
-            Text("Score: \(score)")
-                .font(.title)
-            
-            Text("Combo x\(multiplier)")
-                .font(.headline)
-            
-            if timeRemaining > 0 {
-                Button("TAP") {
-                    let currentTime = Date()
-                    let difference = currentTime.timeIntervalSince(lastTapTime)
-                    
-                    if difference <= 0.5 {
-                        multiplier += 1
-                    } else {
-                        multiplier = 1
-                    }
-                    
-                    lastTapTime = currentTime
-                    
-                    if isGreen {
-                        score += multiplier + 1
-                    } else {
-                        score -= 1
-                    }
-                }
-                .frame(width: 180, height: 180)
-                .background(isGreen ? Color.green : Color.gray)
-                .foregroundColor(.white)
-                .clipShape(Circle())
-                
-                .transition(.scale.combined(with: .opacity))
-            }
-            
-            
-            if timeRemaining == 0 {
-                VStack(spacing: 15) {
-                    Text("Game Over!")
-                        .font(.largeTitle)
-                        .foregroundColor(.red)
-                    
-                    Text("High Score: \(highScore)")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    
-                    Button("Play Again") {
+    @State private var showSettings = false
 
-                        withAnimation {
-                            score = 0
-                            timeRemaining = 10
-                            multiplier = 1
-                            isGreen = true
-                            lastTapTime = Date()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 30) {
+                Text("Reflex Arcade")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+
+                NavigationLink("Tap Frenzy") {
+                    TapFrenzyView()
                 }
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(.green)
+
+                NavigationLink("Light It Up") {
+                    LightItUpView()
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(.blue)
+
+//                NavigationLink("Quiz Rush") {
+//                    //QuizRushView()
+//                }
+//                .buttonStyle(.borderedProminent)
+//                .controlSize(.large)
+//                .tint(.orange)
             }
-        }
-        .animation(.easeInOut, value: timeRemaining == 0)
-        .onReceive(gameTimer) { _ in
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-                
-                if timeRemaining == 0 {
-                    if score > highScore {
-                        highScore = score
+            .padding()
+            .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gearshape")
                     }
                 }
             }
-        }
-        .onReceive(colorTimer) { _ in
-            if timeRemaining > 0 {
-                isGreen.toggle()
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
             }
         }
     }
+}
+
+#Preview {
+    ContentView()
 }
